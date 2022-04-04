@@ -4,6 +4,7 @@
 
 	$app = new \Slim\App;
 
+	/*
 	$app->get('/postagem', function() {
 
 		echo 'postagem';
@@ -68,7 +69,7 @@
 
 	});
 
-	/* Nomear Rotas */
+	/* Nomear Rotas 
 	// é usado a seta em conjunto com a função setName({nome}) para nomear uma rota
 	$app->get('/blog/postagens/{id}', function($request, $response) {
 
@@ -85,10 +86,28 @@
 
 		echo $retorno;
 
+	});*/
+
+
+	/* Agrupar Rotas 
+
+	$app->group('/v1', function() {
+
+		$this->get('/usuarios', function() {
+
+			echo "Listagem de Usuarios";
+
+		});
+
+		$this->get('/postagens', function() {
+
+			echo "Listagem de postagens";
+
+		});
+
 	});
 
-
-	/* Agrupar Rotas */
+	*/
 
 	$app->run();
 
