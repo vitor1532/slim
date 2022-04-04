@@ -17,6 +17,23 @@
 
 	} );
 
+	$app->put('/users/att', function (Request $request, Response $response) {
+
+		//recupera post ($_POST)
+		$put = $request->getParsedBody();
+		
+		$nome = $put['nome'];
+		$email = $put['email'];
+		$id = $put['id'];
+
+		/*
+		Atualizar no banco de dados com UPDATE...
+		*/
+
+		return $response->getBody()->write("Sucesso ao atualizar o id" . $id);
+
+	});
+
 	/*
 	Tipos de requisição ou Verbos HTTP
 
@@ -31,9 +48,13 @@
 		//recupera post ($_POST)
 		$post = $request->getParsedBody();
 		$nome = $post['nome'];
-		$idade = $post['idade'];
+		$email = $post['email'];
 
-		return $response->getBody()->write("Nome: $nome, Idade: $idade");
+		/*
+		Salvar no banco de dados com INSERT INTO...
+		*/
+
+		return $response->getBody()->write("Sucesso ao inserir");
 
 	});
 
