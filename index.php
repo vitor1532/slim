@@ -17,11 +17,23 @@
 
 	} );
 
+	$app->delete('/users/remove/{id}', function (Request $request, Response $response) {
+
+		$id = $request->getAttribute('id');
+
+		/*
+		Deletar no banco de dados com DELETE...
+		*/
+
+		return $response->getBody()->write("Sucesso ao remover o id: " . $id);
+
+	});
+
 	$app->put('/users/att', function (Request $request, Response $response) {
 
 		//recupera post ($_POST)
 		$put = $request->getParsedBody();
-		
+
 		$nome = $put['nome'];
 		$email = $put['email'];
 		$id = $put['id'];
