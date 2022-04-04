@@ -69,6 +69,26 @@
 	});
 
 	/* Nomear Rotas */
+	// é usado a seta em conjunto com a função setName({nome}) para nomear uma rota
+	$app->get('/blog/postagens/{id}', function($request, $response) {
+
+		$id = $request->getAttribute('id');
+
+		echo "listar postagens para um ID";
+
+	})->setName("blog");
+
+	$app->get('/meusite', function($request, $response) {
+		
+		//usando essa escrita, no pathFor o primeiro parametro é o nome da rota e o segundo (podendo ser um array) sendo os parametros setados na rota cujo nome foi citado
+		$retorno = $this->get("router")->pathFor("blog", ["id" => "5"]);
+
+		echo $retorno;
+
+	});
+
+
+	/* Agrupar Rotas */
 
 	$app->run();
 
