@@ -7,10 +7,35 @@
 
 	$app = new \Slim\App;
 
+	/* Container dependency injection */
+	class Servico {
 
+	}
+
+	/* Container Pimple */
+	$container = $app->getContainer();
+	$container['servico'] = function() {
+		
+		return new Servico;
+
+	};
+
+
+	$app->get('/servico', function(Request $request, Response $response) {
+
+		$servico = $this->get('servico');
+		var_dump($servico);
+
+	} );
+
+	/* Controllers como serviço */
+
+	$app->run();
+
+	/*
 	$app->get('/postagens', function(Request $request, Response $response) {
 
-		/* escreve no corpo da resposta utilizando o padrão PSR& */
+		/* escreve no corpo da resposta utilizando o padrão PSR7 
 		$response->getBody()->write("Listagem de Postagens");
 
 		return $response;
@@ -23,7 +48,7 @@
 
 		/*
 		Deletar no banco de dados com DELETE...
-		*/
+		
 
 		return $response->getBody()->write("Sucesso ao remover o id: " . $id);
 
@@ -40,7 +65,7 @@
 
 		/*
 		Atualizar no banco de dados com UPDATE...
-		*/
+		
 
 		return $response->getBody()->write("Sucesso ao atualizar o id" . $id);
 
@@ -53,7 +78,7 @@
 	post -> Criar dado no servidor (Insert)
 	put -> Atualizar dados no servidor (Update)
 	delete -> Deletar dados do servidor (Delete)
-	*/
+	
 
 	$app->post('/users/add', function (Request $request, Response $response) {
 
@@ -64,13 +89,11 @@
 
 		/*
 		Salvar no banco de dados com INSERT INTO...
-		*/
+		
 
 		return $response->getBody()->write("Sucesso ao inserir");
 
-	});
-
-	$app->run();
+	});*/
 
 	/*
 	$app->get('/postagem', function() {
