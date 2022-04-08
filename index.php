@@ -5,10 +5,25 @@
 
 	require 'vendor/autoload.php';
 
-	$app = new \Slim\App;
+	$app = new \Slim\App(
+		['settings' => [
+			'displayErrorDetails' => true
+			] 
+		]
+	);
 
 	/* Container dependency injection */
 	class Servico {
+
+		public function txt() {
+
+			$txt;
+
+			$txt = "Este é o serviço <br>";
+
+			echo $txt;
+		}
+		
 
 	}
 
@@ -21,14 +36,33 @@
 	};
 
 
+
+	$app->get('/', function() {
+
+		echo "Página inicial Slim. <br>";
+		echo "<a href='servico'>servico</a> <br>";
+		echo "<a href='usuario'>usuario</a>";
+
+	});
+
+
 	$app->get('/servico', function(Request $request, Response $response) {
 
 		$servico = $this->get('servico');
+		$servico->txt();
 		var_dump($servico);
 
 	} );
 
 	/* Controllers como serviço */
+	$container = $app->getContainer();
+	$container['Home'] = function() {
+		
+		return new MyApp\controllers\Home( new MyApp\View );
+
+	};
+
+	$app->get('/usuario', 'Home:index');
 
 	$app->run();
 
