@@ -2,6 +2,7 @@
 	
 	use \Psr\Http\Message\ServerRequestInterface as Request;
 	use \Psr\Http\Message\ResponseInterface as Response;
+	use Illuminate\Database\Capsule\Manager as Capsule;
 
 	require 'vendor/autoload.php';
 
@@ -12,7 +13,152 @@
 		]
 	);
 
-	/* Container dependency injection */
+	$app->get('/', function() {
+
+		echo "Página inicial Slim. <br>";
+
+	});
+
+
+	$container = $app->getContainer();
+	$container['db'] = function() {
+
+		$capsule = new Capsule;
+
+		$capsule->addConnection([
+		    'driver' => 'mysql',
+		    'host' => 'localhost',
+		    'database' => 'slim',
+		    'username' => 'root',
+		    'password' => '',
+		    'charset' => 'utf8',
+		    'collation' => 'utf8_unicode_ci',
+		    'prefix' => '',
+		]);
+
+		$capsule->setAsGlobal();
+		$capsule->bootEloquent();
+
+		return $capsule;
+
+	};
+
+	$app->get('/users', function(Request $request, Response $response) {
+
+		$db = $this->get('db');
+		/*$db->schema()->dropIfExists('usuarios');
+		$db->schema()->create('usuarios', function($table) {
+
+			$table->increments('id');
+			$table->string('nome');
+			$table->string('email')->unique();
+			$table->timestamps();
+
+		});*/
+
+		/* inserir 
+		$db->table('usuarios')->insert([
+
+			'nome' => 'Vitor',
+			'email' => 'vitor@teste.com'
+
+		]);*/
+
+		/* Atualizar 
+		$db->table('usuarios')
+					->where('id', 1)
+					->update([
+						'nome' => 'Vitor'
+					]);
+		*/
+
+		/* deletar 
+		$db->table('usuarios')
+					->where('id', 1)
+					->delete();
+		*/
+
+		/* listar */
+		$users = $db->table('usuarios')->get();
+
+		foreach($users as $user) {
+			echo $user->nome . '<br>';
+		}
+
+	} );
+
+
+	$app->run();
+
+	/* Tipos de respostas:
+	cabeçalho, texto, Json, XML
+	 
+
+	$app->get('/header', function(Request $request, Response $response) {
+
+		$response->write('Retorno Header');
+		return $response->withHeader('allow', 'PUT')
+				 ->withAddedHeader('Content-Length', 10);
+
+	} );
+
+
+	$app->get('/json', function(Request $request, Response $response) {
+
+		return $response->withJson( [
+			"nome" => "Vitor Martins",
+			"idade" => 25,
+			"endereco" => "Rua I, 15"
+		] );
+
+	} );
+
+	$app->get('/xml', function(Request $request, Response $response) {
+
+		$xml = file_get_contents('arquivo');
+		$response->write($xml);
+
+		return $response->withHeader('Content-Type', 'application/xml');
+
+	} );*/
+
+	/* Middleware 
+
+	$app->add( function($request, $response, $next) {
+
+		$response->write(' Inicio camada 1 + ');
+		//return $next($request, $response);
+		$response = $next($request, $response);
+		$response->write(' + Fim camada 1 ');
+
+		return $response;
+
+	});
+
+	$app->add( function($request, $response, $next) {
+
+		$response->write(' Inicio camada 2 + ');
+		//return $next($request, $response);
+		$response = $next($request, $response);
+		$response->write(' + Fim camada 2 ');
+
+		return $response;
+
+	});
+
+	$app->get('/usuarios', function(Request $request, Response $response) {
+
+		$response->write(' Ação Principal usuario');
+
+	});
+
+	$app->get('/postagens', function(Request $request, Response $response) {
+
+		$response->write(' Ação Principal postagens');
+
+	});*/
+
+	/* Container dependency injection 
 	class Servico {
 
 		public function txt() {
@@ -27,7 +173,7 @@
 
 	}
 
-	/* Container Pimple */
+	 Container Pimple 
 	$container = $app->getContainer();
 	$container['servico'] = function() {
 		
@@ -54,7 +200,7 @@
 
 	} );
 
-	/* Controllers como serviço */
+	 Controllers como serviço 
 	$container = $app->getContainer();
 	$container['Home'] = function() {
 		
